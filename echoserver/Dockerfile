@@ -1,4 +1,4 @@
-FROM node:7-alpine
+FROM node:alpine3.11
 
 RUN apk add --update --no-cache bash \
 	&& apk add --update --no-cache -t .build-deps python make g++ gcc \

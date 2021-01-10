@@ -84,16 +84,6 @@ services:
     networks:
       - course-platform-network
 
-  echo:
-    build: ./echo
-    labels:
-      - "traefik.enable=true"
-      - "traefik.frontend.rule=Host:echo.${DOMAIN}"
-      - "traefik.port=80"
-    working_dir: "/usr/src/app"
-    volumes:
-      - "./:/usr/src/app"
-
 networks:
   course-platform-network:
     driver: bridge
