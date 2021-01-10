@@ -6,9 +6,11 @@ namespace App\Models;
 
 use App\Events\QuizAnswerEvaluated;
 use App\Events\QuizAnswerEvaluating;
+use ErrorException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\DB;
 
 /**
  * @property int $id
@@ -45,11 +47,41 @@ final class QuizAnswer extends Model
             throw new \OutOfBoundsException("Score can not be higher that maximum for this quiz (max={$this->quiz->max_score})");
         }
 
-        event(new QuizAnswerEvaluating($this, $score, $gradedBy));
+        try {
+            // start new transaction to maintain data integrity.
+            DB::beginTransaction();
+            event(new QuizAnswerEvaluating($this, $score, $gradedBy));
 
-        $this->score = $score;
-        $this->save();
+            // Get the course id
+            $courseId = $this->quiz->lesson->course->id;
+            // Get the course score object.
+            $courseScore = CourseScore::query()->where('course_id', $courseId)->where('user_id', $this->user_id)->first();
+            // if course score exists, then increase the scores and update
+            // the last updated score otherwise we should create a new one.
+            if ($courseScore) {
+                $courseScore->score += $score;
+                $courseScore->last_added_score = $score;
+            } else {
+                $courseScore = new CourseScore();
+                $courseScore->course_id = $courseId;
+                $courseScore->user_id = $this->user_id;
+                $courseScore->last_added_score = $score;
+                $courseScore->score = $score;
+            }
+            // save the course score.
+            $courseScore->save();
 
-        event(new QuizAnswerEvaluated($this, $score, $gradedBy));
+            $this->score = $score;
+            $this->save();
+
+            event(new QuizAnswerEvaluated($this, $score, $gradedBy));
+            // save the transaction
+            DB::commit();
+        } catch (\Throwable $th) {
+            // rollback the transaction on error
+            DB::rollBack();
+            // throw the error
+            throw new ErrorException("Can't perform grade");
+        }
     }
 }

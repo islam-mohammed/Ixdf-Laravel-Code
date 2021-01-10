@@ -15,7 +15,7 @@ use Illuminate\Database\Seeder;
 
 class QuizAnswersSeeder extends Seeder
 {
-    private const NUMBER_OF_USERS = 200;
+    private const NUMBER_OF_USERS = 100;
 
     /** @var \Illuminate\Support\Collection */
     private $countryCodes;
@@ -80,7 +80,7 @@ class QuizAnswersSeeder extends Seeder
             ->first();
 
         if ($courseScore) {
-            $courseScore->updateScore($score);
+            $courseScore->updateCourseScore($score);
         } else {
             CourseScore::factory()->state([
                 'user_id' => $enrollment->user->id,

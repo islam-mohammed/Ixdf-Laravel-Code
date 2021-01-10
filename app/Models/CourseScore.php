@@ -13,7 +13,8 @@ class CourseScore extends Model
     protected $fillable = [
         'course_id',
         'user_id',
-        'score'
+        'score',
+        'last_added_score'
     ];
     public function course(): BelongsTo
     {
@@ -25,7 +26,7 @@ class CourseScore extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function updateScore(int $score)
+    public function updateCourseScore(int $score): void
     {
         $this->score += $score;
         $this->last_added_score = $score;

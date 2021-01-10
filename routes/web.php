@@ -6,6 +6,8 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LessonController;
 use App\Http\Controllers\QuizAnswerController;
 use App\Models\Course;
+use App\Models\QuizAnswer;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,7 +24,7 @@ use Illuminate\Support\Facades\Route;
 \Illuminate\Support\Facades\Auth::routes();
 
 Route::get('/', function () {
-    return Course::first()->getGlobalScore();
+    return view('welcome');
 });
 
 Route::get('/home', [HomeController::class, 'index'])

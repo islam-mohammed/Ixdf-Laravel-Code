@@ -24,7 +24,7 @@
                     </ol>
                 </div>
             </div>
-            <course-statistics></course-statistics>
+            <course-statistics :score-statistics="{{ json_encode($scoreStatistics) }}"></course-statistics>
         </div>
     </div>
 </div>

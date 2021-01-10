@@ -6,6 +6,7 @@ use App\Models\Course;
 use App\Models\CourseEnrollment;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
 
 class CourseEnrollmentController extends Controller
 {
@@ -25,7 +26,10 @@ class CourseEnrollmentController extends Controller
             return view('courses.show', ['course' => $course]);
         }
 
-        return view('courseEnrollments.show', ['enrollment' => $enrollment]);
+
+        $scoreStatistics = $course->getCourseStatistics(Auth::user());
+
+        return view('courseEnrollments.show', ['enrollment' => $enrollment, 'scoreStatistics' => $scoreStatistics]);
     }
 
     public function store(string $courseSlug): RedirectResponse
