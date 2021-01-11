@@ -138,11 +138,15 @@ final class Course extends Model
 
     private function generateTiers($rankedScore, int $userId): array
     {
+        // get the current user index
         $userIndex = $rankedScore->search(function ($score) use ($userId) {
             return $score['user_id'] === $userId;
         });
-        $userRank = $rankedScore->where('user_id', $userId)->first()['rank'];
+        // get the current user rank
+        $userRank = $rankedScore->where('user_id', $userId)?->first()['rank'] ?? null;
+        // get the current user board position
         $userPosition = $userIndex ? $userIndex + 1 : null;
+        // get the total numbers of users for the current course
         $numberOfRanks = count($rankedScore);
 
         $topTier = null;
@@ -154,16 +158,20 @@ final class Course extends Model
         // create the bottom tier
         $bottomTier = $rankedScore->take(-3)->whereNotIn('user_id', $topTier->pluck('user_id'))->values();
 
-        // create the middel tier
+        // create the middle tier
         if ($userPosition > 3 && $userPosition < $numberOfRanks - 3) {
+            // set the previous user
             $middleTier[] = $rankedScore[$userIndex - 1];
+            // set the current user
             $middleTier[] = $rankedScore[$userIndex];
+            // set the next user
             $middleTier[] = $rankedScore[$userIndex + 1];
             $middleTier = collect($middleTier);
         }
 
         // should be atleast 2 tiers to check sequence
         if ($topTier->count() > 0 && $bottomTier->count() > 0) {
+            // generate tiers sequence
             $this->generateSequence($topTier, $bottomTier,  $middleTier);
         }
 
@@ -178,25 +186,46 @@ final class Course extends Model
 
     private function generateSequence(&$topTier, &$bottomTier,  &$middleTier): void
     {
+        // get the last rank on top tier
         $lastRankOnTop = $topTier->last()['rank'];
+        // get the first rank on bottom tier
         $firstRankOnBottom = $bottomTier->first()['rank'];
+
+        // if there is no middle tier then should check
+        // the sequence with bottom tier
         if (!$middleTier) {
+             // check top tier and bottom tier sequence
             if ($lastRankOnTop === $firstRankOnBottom - 1) {
+                // if there is a sequence, then merge the bottom tier
+                // with top tier and remove the bottom tier elements
                 $topTier = [...$topTier,...$bottomTier->splice(0)];
             }
         } else {
+            // if the middle tier is set, then should check
+            // the sequence with middle and bottom tiers
+
+            // get the first rank on the middle tier
             $firstRankOnMid = $middleTier->first()['rank'];
+            // get the last rank on the middle tier
             $lastRankOnMid = $middleTier->last()['rank'];
-
+            // check top tier and middle tier sequence
             if ($lastRankOnTop === $firstRankOnMid - 1) {
-
+                // if there is a sequence, then merge the middel tier
+                // with top tier and remove the middle tier elements
                 $topTier = [...$topTier, ...$middleTier->splice(0)];
-                // reevaluate the top the last rank in top after merging with the middle tier.
+                // reevaluate the top tier last rank after merging the middle tier.
                 $lastRankOnTop = collect($topTier)->last()['rank'];
+                // check top tier and bottom tier sequence
                 if ($lastRankOnTop === $firstRankOnBottom - 1) {
+                    // if there is a sequence, then merge the bottom tier
+                    // with top tier and remove the bottom tier elements
                     $topTier = [...$topTier,...$bottomTier->splice(0)];
                 }
+                // check middle tier and bottom sequence incase of
+                // there is now sequence between top and bottom tiers
             } else if ($lastRankOnMid === $firstRankOnBottom - 1) {
+                // if there is a sequence, then merge the bottom tier
+                // with middle tier and remove the bottom tier elements
                 $middleTier = [...$middleTier,...$bottomTier->splice(0)];
             }
         }

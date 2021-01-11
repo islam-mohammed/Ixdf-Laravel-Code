@@ -81,7 +81,7 @@ final class QuizAnswer extends Model
             // rollback the transaction on error
             DB::rollBack();
             // throw the error
-            throw new ErrorException("Can't perform grade");
+            throw new ErrorException($th);
         }
     }
 }

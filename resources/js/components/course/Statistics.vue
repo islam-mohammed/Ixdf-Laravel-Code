@@ -326,7 +326,10 @@ export default {
     },
   },
   mounted() {
-    console.log(this.scoreStatistics);
+    // Echo.channel('statistics')
+    //     .listen('quiz-evaluated', (e) => {
+    //         alert(e);
+    //     });
   },
 };
 </script>

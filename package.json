@@ -23,10 +23,5 @@
         "sass-loader": "^7.1.0",
         "vue": "^2.5.17",
         "vue-template-compiler": "^2.6.12"
-    },
-    "dependencies": {
-        "socket.io": "^3.0.5",
-        "laravel-echo": "^1.10.0",
-        "laravel-echo-server": "^1.6.2"
     }
 }

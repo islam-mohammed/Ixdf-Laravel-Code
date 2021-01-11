@@ -7,8 +7,10 @@ use App\Http\Controllers\LessonController;
 use App\Http\Controllers\QuizAnswerController;
 use App\Models\Course;
 use App\Models\QuizAnswer;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Redis;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +26,9 @@ use Illuminate\Support\Facades\Route;
 \Illuminate\Support\Facades\Auth::routes();
 
 Route::get('/', function () {
+    $user = User::find(100);
+    $quizAnswe = QuizAnswer::find(769);
+    $quizAnswe->grade(5,  $user);
     return view('welcome');
 });
 
