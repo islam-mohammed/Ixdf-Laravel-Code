@@ -5,13 +5,7 @@ use App\Http\Controllers\CourseEnrollmentController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LessonController;
 use App\Http\Controllers\QuizAnswerController;
-use App\Models\Course;
-use App\Models\QuizAnswer;
-use App\Models\User;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Redis;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
