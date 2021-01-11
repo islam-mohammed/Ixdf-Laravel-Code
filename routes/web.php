@@ -26,9 +26,6 @@ use Illuminate\Support\Facades\Redis;
 \Illuminate\Support\Facades\Auth::routes();
 
 Route::get('/', function () {
-    $user = User::find(100);
-    $quizAnswe = QuizAnswer::find(769);
-    $quizAnswe->grade(5,  $user);
     return view('welcome');
 });
 
