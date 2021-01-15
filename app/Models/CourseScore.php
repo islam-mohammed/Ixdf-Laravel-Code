@@ -32,4 +32,15 @@ class CourseScore extends Model
         $this->last_added_score = $score;
         $this->save();
     }
+
+    public static function createCourseScore(int $score, int $courseId, int $userId) {
+        $courseScore = new CourseScore();
+        $courseScore->course_id = $courseId;
+        $courseScore->user_id = $userId;
+        $courseScore->last_added_score = $score;
+        $courseScore->score = $score;
+        $courseScore->save();
+    }
+
+
 }

@@ -14,12 +14,15 @@ final class QuizAnswerEvaluated
 
     public int $score;
 
+    public int $courseId;
+
     public GraderInterface $grader;
 
-    public function __construct(QuizAnswer $quizAnswer, int $score, GraderInterface $grader)
+    public function __construct(QuizAnswer $quizAnswer, int $score, int $courseId, GraderInterface $grader)
     {
         $this->quizAnswer = $quizAnswer;
         $this->score = $score;
+        $this->courseId = $courseId;
         $this->grader = $grader;
     }
 }
