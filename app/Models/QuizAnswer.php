@@ -7,6 +7,7 @@ namespace App\Models;
 use App\Events\QuizAnswerEvaluated;
 use App\Events\QuizAnswerEvaluating;
 use ErrorException;
+use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -49,9 +50,27 @@ final class QuizAnswer extends Model
         $courseId = $this->quiz->lesson->course->id;
         event(new QuizAnswerEvaluating($this, $score, $gradedBy));
 
-        $this->score = $score;
-        $this->save();
+        DB::beginTransaction();
+        try {
+            // Get the course score object.
+            $courseScore = CourseScore::query()->where('course_id', $courseId)->where('user_id',  $this->user_id)->first();
+            // if course score exists, then increase the scores and update
+            // the last updated score otherwise we should create a new one.
+            if ($courseScore) {
+                $courseScore->updateCourseScore($score);
+            } else {
+                CourseScore::createCourseScore($score, $courseId, $this->user_id);
+            }
 
-        event(new QuizAnswerEvaluated($this, $score, $courseId, $gradedBy));
+            $this->score = $score;
+            $this->save();
+
+            event(new QuizAnswerEvaluated($this, $score, $courseId, $gradedBy));
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw new Exception('grade was failed');
+        }
+
     }
 }
