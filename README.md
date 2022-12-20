@@ -2,8 +2,6 @@
 
 ## Feature Description
 
-> Hey Devs!
->
 > In order to improve the gamification of our course platform, and to improve our users’ engagement in the platform, we would like to implement a "Course Leaderboard". We want to make learning just as addictive as playing a computer game and need your help.
 >
 > The leaderboard should display a list of users who have successfully completed a course and their corresponding position at a given course. Each course must have its own slug, which follows this pattern `/courses/{slug}`, e.g. `/courses/beginners-guide-to-user-experience`). That way, every course should have a unique leaderboard URL.
