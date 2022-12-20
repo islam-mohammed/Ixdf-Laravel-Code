@@ -1,21 +1,6 @@
-# Welcome to the IxDF Back-End Code Challenge!
+# Welcome to the IxDF Back-End Code!
 
-The main goal of this challenge is to get a sense of your coding style and choices.
-
-The code challenge does not involve any exotic or bleeding edge technologies, tools, etc., and that’s the point.
-We’d like to focus on your coding style and not get distracted.
-
-On that note, we’re also not looking for "rights and wrongs" and there are no "trick parts" in this challenge.
-We would merely like to get a more profound impression of how you write code.
-
-That also will allow us to have a more fruitful and constructive discussion at the technical interview.
-We’re not fans of white-boarding at interviews, so we’d much rather have some concrete code to talk about.
-We think that makes the interview much more enjoyable and productive.
-
-
-## Your challenge/task
-
-Imagine you’re our new full-stack or back-end developer 🦄 and you’ve just got a feature request from our design team which goes like this:
+## Feature Description
 
 > Hey Devs!
 >
@@ -41,44 +26,11 @@ Imagine you’re our new full-stack or back-end developer 🦄 and you’ve just
 7. Tiers *must be* separated by a line.
 8. Display two leaderboards: worldwide and for the user country.
 
-So, your goal now is to implement both back-end and front-end parts of this feature.
-
-
-## What we will evaluate
-
-There are no set-in-stone technical requirements for this feature.
-The only requirement that is noticeable by our users and visitors is performance.
-Leaderboard data should always be up to date (any enrolment score can be changed by a course graders/examiners/assessors anytime (there is only one method from a Grading API, see `\App\Models\QuizAnswer::grade()`)).
-
-You can do everything you want in order to implement this feature:
- - Change the DB structure
- - Move significant parts of the logic to the DB
- - Move significant parts of the logic to the back-end
- - Move significant parts of the logic to the front-end, or load data by AJAX (if so, please use Vanilla JS or Vue.js)
- - Move significant parts of the logic to ... okay... you get it... We don’t want to limit your ideas :)
-
-We will be evaluating the following aspects:
- - Your ability to design the overall project architecture and keep it consistent with your implementation (note: frequent atomic commits are welcome!).
- - Your ability to write readable and reusable code with a clean API.
- - Performance of your solution (this page is pretty popular and we don’t want to overload our server).
-
-You are of course more than welcome to ask questions about this challenge in case you’re in doubt about something or need more background information!
-
-## Technical notes
-
-We will be glad if you follow our [PHP](https://handbook.interaction-design.org/library/back-end/conventions--php.html)
-and [Laravel](https://handbook.interaction-design.org/library/back-end/conventions--laravel.html) conventions,
-but it’s just a recommendation because we value your time ❤️.
+So, the goal of this project is to implement both back-end and front-end parts of this feature.
 
 ## How to setup a working environment
 
 This project is a simple Laravel 8 application.
-
-In order to help you with the initial setup we already added some basic code:
- - Routes, controllers and views
- - Migrations to create all required tables
- - Factories to create all entities
- - Database seeders to have enough information to display leaderboards
 
 
 ### A) Docker
@@ -113,48 +65,3 @@ docker-compose exec front yarn dev
 ```
 
 If everything worked well, a project should be accessible by [http://localhost:8080](http://localhost:8080).
-
-Got problems? Help us improve this code challenge by writing to us. We’re happy to help :-)
-
-
-### B) Local/Virtual Machine
-
-```sh
-# Copy the example .env file
-cp .env.example .env
-
-# install composer dependencies
-composer install
-
-# Run all migrations and seed DB
-php artisan migrate:fresh --seed
-
-# Generate application key
-php artisan key:generate
-
-# Install front end dependencies
-yarn install
-
-# Build front end assets (CSS, JS)
-yarn dev
-```
-
-
-### After installation done
-
-Please log in at the `/login` page by using any auto-generated email address you can find in the DB.
-The password for all auto-generated users is `secret`.
-
-After a successful login, you will be redirected to a page with a list of links to your course enrollments.
-Please click any of the links, and you will be redirected to a page where you should implement your this challenge, i.e. the leaderboard.
-
-
-## How to submit your solution
-
-Please submit your solution as a **private** GitHub repository and send us an invitation for [IxDF-bot](https://github.com/ixdf-bot).
-We ❤️ atomic commits.
-Ideally, you should make an initial commit with the files of this code challenge and then build your solution upon that.
-
-PS: We at the IxDF would greatly appreciate it if you could kindly give us some feedback about this code challenge. :)
-
-🦄
